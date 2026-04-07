@@ -1,0 +1,81 @@
+---
+title: "taller clase"
+author: Leandro Reyes Calderon
+format: html
+---
+
+# Introducción
+
+En este ejercicio se trabajan unas notas dependiendo de la jornada: mañana, tarde o noche. La idea es mirar si el horario influye en el rendimiento academico, aunque tampoco es que con estos datos ya se pueda asegurar algo totalmente.
+
+Siento que este tipo de analisis sirve más como para hacerse una idea general que para sacar una conclusión definitiva.
+
+## Notas
+
+```{r}
+mañana <- c(4.0, 3.5, 3.8, 3.6, 4.1)
+tarde <- c(3.8, 3.5, 3.0, 2.9)
+noche <- c(3.1, 2.5, 2.6)
+```
+
+------------------------------------------------------------------------
+
+# Tamaño
+
+La función `length` sirve para saber cuántos datos hay. Aqui se usa para contar las notas en cada jornada.
+
+```{r}
+length(mañana)
+```
+
+En la mañana hay 5 notas, siendo la jornada con más datos.
+
+```{r}
+length(tarde)
+```
+
+En la tarde hay 4 notas, un poco menos.
+
+```{r}
+length(noche)
+```
+
+Y en la noche hay menos datos que en las otras, lo cual puede afectar un poco los resultados.
+
+------------------------------------------------------------------------
+
+# Media
+
+La media es un valor que representa todos los datos en uno solo. Se calcula sumando los valores y dividiendolos entre la cantidad.
+
+```{r}
+mean(mañana)
+```
+
+$$ 
+\large x_{1} = \frac{4.0 + 3.5 + 3.8 + 3.6 + 4.1}{5} = 3.8
+$$
+
+Esto muestra que el promedio en la mañana es 3.8. Diria que es un buen promedio y que en ese horario les va mejor.
+
+```{r}
+mean(tarde)
+```
+
+$$
+\large x_{2} = \frac{3.8 + 3.5 + 3.0 + 2.9}{4} = 3.3
+$$
+
+Aquí el promedio baja a 3.3, entonces ya se nota un cambio comparado con la mañana.
+
+```{r}
+mean(noche)
+```
+
+$$
+\large x_{3}=\frac{3.1 + 2.5 + 2.6}{3} = 2.7333
+$$
+
+En la noche es donde el promedio es más bajo. Puede ser porque estudiar a esa hora es más pesado o por otras cosas, no necesariamente solo el horario.
+
+En conclusión, aunque los datos son pocos, parece que en la mañana hay mejor rendimiento. Igual no se puede asegurar del todo, pero si da una idea.

@@ -1,0 +1,204 @@
+---
+title: ejercicios dplyr
+author: Leandro Reyes Calderon
+date: "2026-04-05"
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    toc: true
+    toc_float: true
+    number-sections: true
+    code-fold: show
+    code-tools: true
+    code-copy: hover
+    code-overflow: wrap
+    embed-resources: true
+reference-location: margin
+lang : es
+---
+
+```{r}
+library(dplyr)
+library(gapminder)
+```
+
+Se realiza una agrupacion de los paises, los años y su esperanza de vida
+
+```{r}
+gapminder %>%
+ select(country, year, lifeExp)
+```
+
+se filtran los años para que solo aparezcan los años del 2007
+
+```{r}
+gapminder %>%
+ filter(year == 2007)
+```
+
+Se deja que solo sean paises de Asia
+
+```{r}
+gapminder %>%
+ filter(continent == "Asia")
+```
+
+Mostrar donde la esperanza de vida sea mayor a 70
+
+```{r}
+gapminder %>%
+ filter(lifeExp > 70)
+```
+
+Se ordenan la esperanza de vida (menor a mayor)
+
+```{r}
+gapminder %>%
+ arrange(lifeExp)
+```
+
+Ordenar el PIB (mayor a menor)
+
+```{r}
+gapminder %>%
+ arrange(desc(gdpPercap))
+```
+
+Manera de crear una nueva columna con el PIB total
+
+```{r}
+gapminder %>%
+ mutate(gdp_total = gdpPercap * pop)
+
+```
+
+Se filtran los paises con mas de 100.000.000 de poblacion en el año 2007
+
+```{r}
+gapminder %>%
+ filter(year == 2007, pop > 100000000)
+```
+
+Mostrar países de Europa solo con país y PIB per cápita
+
+```{r}
+gapminder %>%
+ filter(continent == "Europe") %>%
+ select(country, gdpPercap)
+        
+```
+
+Se evidencia y se promedia la esperanza de vida por continente
+
+```{r}
+gapminder %>%
+ group_by(continent) %>%
+ summarise(avg_lifeExp = mean(lifeExp))
+```
+
+Calcular el promedio de PIB per cápita por continente y año
+
+```{r}
+gapminder %>%
+ group_by(continent, year) %>%
+ summarise(avg_gdpPercap = mean(gdpPercap))
+```
+
+Identificar la esperanza de vida maxima de continente
+
+```{r}
+gapminder %>%
+ group_by(continent) %>%
+ summarise(max_lifeExp = max(lifeExp))
+
+```
+
+Ver cuantos paises son en cada continente
+
+```{r}
+gapminder %>%
+ group_by(continent) %>%
+ summarise(n_countries = n_distinct(country))
+```
+
+Por continente mirar la poblacion total
+
+```{r}
+gapminder %>%
+ group_by(continent) %>%
+ summarise(total_pop = sum(pop))
+
+```
+
+Calcular el promedio de vida para el continente de America
+
+```{r}
+gapminder %>%
+ filter(continent == "Americas") %>%
+ group_by(year) %>%
+ summarise(avg_lifeExp = mean(lifeExp))
+
+```
+
+Mostrar los 10 países con mayor PIB per cápita en 2007
+
+```{r}
+gapminder %>%
+ filter(year == 2007) %>%
+ arrange(desc(gdpPercap)) %>%
+ slice_head(n = 10)
+
+```
+
+Identificar cual es el mayor país con promedio de vida
+
+```{r}
+gapminder %>%
+ group_by(year) %>%
+ slice_max(lifeExp, n = 1)
+
+```
+
+Calcular la mediana del PIB per cápita por continente
+
+```{r}
+gapminder %>%
+ group_by(continent) %>%
+ summarise(median_gdpPercap = median(gdpPercap))
+```
+
+Calcular el cambio de esperanza de vida entre 1952 y 2007 por país
+
+```{r}
+gapminder %>%
+ filter(year %in% c(1952, 2007)) %>%
+ select(country, year, lifeExp) %>%
+ tidyr::pivot_wider(names_from = year, values_from = lifeExp) %>%
+ mutate(change_lifeExp = `2007`) 
+```
+
+Encontrar los 5 países con mayor crecimiento en PIB per cápita
+
+```{r}
+gapminder %>%
+ filter(year %in% c(1952, 2007)) %>%
+ select(country, year, gdpPercap) %>%
+ tidyr::pivot_wider(names_from = year, values_from = gdpPercap) %>%
+ mutate(change_gdp = `2007` - `1952`) %>%
+ arrange(desc(change_gdp)) %>%
+ slice_head(n = 5)
+```
+
+BONUS EXTRA
+
+Agrupando por continente en el año 2007 identificar cual es el promedío de vida y ordenarlos de mayor a menor
+
+```{r}
+gapminder %>%
+ filter(year == 2007) %>%
+ group_by(continent) %>%
+ summarise(avg_lifeExp = mean(lifeExp)) %>%
+ arrange(desc(avg_lifeExp))
+```
